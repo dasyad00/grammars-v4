@@ -33,8 +33,7 @@ file: '{' header document '}' EOF;
 header:
 	RTFVERSION charset UNICODE_CHAR_LEN? HTMAUTSP? DEFF? fonttbl colortbl;
 
-RTFVERSION: RTF INTEGER?;
-RTF: '\\rtf';
+RTFVERSION: '\\rtf' INTEGER? SPACE?;
 
 charset: (ANSI | MAC | PC | PCA)? (ANSICPG)?;
 ANSI: '\\ansi' SPACE?;
@@ -85,7 +84,7 @@ fontemb:
 fonttype: FTNIL | FTTRUETYPE;
 fontfname: '{\\*' FONTFILE CODEPAGE? pcdata '}';
 fontname: pcdata;
-fontaltname: '{\\*' '\\falt' pcdata '}';
+fontaltname: '{\\*' FALT pcdata '}';
 
 NONTAGGEDNAME: '\\*' '\\fname' SPACE?;
 FONTEMB: '\\fontemb' SPACE?;
@@ -93,6 +92,7 @@ FTNIL: '\\ftnil' SPACE?;
 FTTRUETYPE: '\\fttruetype' SPACE?;
 FONTFILE: '\\fontfile' SPACE?;
 CODEPAGE: '\\cpg' SPACE?;
+FALT: '\\falt';
 
 /// Color Table
 
@@ -303,7 +303,42 @@ pcdata: (
 		~(
 			'{'
 			| '}'
-			| CONTROL_CODE // undefined control codes
+            // undefined control codes
+			| CONTROL_CODE
+			// rtf
+			| RTFVERSION
+			// `charset`
+			| ANSI
+			| MAC
+			| PC
+			| PCA
+			| ANSICPG
+			// default font
+			| DEFF
+			//  `fonttbl`
+			| FN
+			| FONTTBL
+			// `fontfamily
+			| FNIL
+			| FROMAN
+			| FSWISS
+			| FMODERN
+			| FSCRIPT
+			| FDECOR
+			| FTECH
+			| FBIDI
+			| FCHARSETN
+			| FPRQN
+			| NONTAGGEDNAME
+			|
+			// `fontemb`
+			NONTAGGEDNAME
+			| FONTEMB
+			| FTNIL
+			| FTTRUETYPE
+			| FONTFILE
+			| CODEPAGE
+			| FALT
 			// defined control codes `parfmt`
 			| PAR
 			| PARD
