@@ -1,7 +1,7 @@
 /*
  BSD License
 
- Copyright (c) 2023, Danang Syady Rahmatullah, Martin Mirchev All rights reserved.
+ Copyright (c) 2023, Danang Syady Rahmatullah, Martin Mirchev. All rights reserved.
 
  Redistribution and use in source and binary forms, with or without modification, are permitted
  provided that the following conditions are met:
@@ -26,7 +26,7 @@
 lexer grammar rtfLexer;
 
 options {
-    superClass=RtfLexerBase;
+	superClass = RtfLexerBase;
 }
 
 // This grammar does not care about ranges for some properties, namely: CONTROL_CODE_DELIMITER.
@@ -329,7 +329,8 @@ TROWD: '\\TROWD' SPACE?;
 TRGAPH: '\\trgaph' SPACE?;
 NESTROW: '\\nestrow' SPACE?;
 NESTCELL: '\\nestcell' SPACE?;
-NESTTABLEPROPS: IGNORABLE_CONTROL_PREFIX '\\nesttableprops' SPACE?;
+NESTTABLEPROPS:
+	IGNORABLE_CONTROL_PREFIX '\\nesttableprops' SPACE?;
 
 /// Character text
 PLAIN: '\\plain' SPACE?;
@@ -410,8 +411,7 @@ CONTROL_CODE: '\\' [a-zA-Z]+ ((HYPHEN? INTEGER)? SPACE?)?;
 
 UNKNOWN_CONTROL_GROUP:
 	(
-  OPENING_BRACE
-		UNKNOWN_CONTROL_WORD { this.openingBrace(); this.pushMode(UnknownControl); }
+		OPENING_BRACE UNKNOWN_CONTROL_WORD { this.openingBrace(); this.pushMode(UnknownControl); }
 	) -> skip;
 
 // minimum length string to catch

@@ -1,7 +1,7 @@
 /*
  BSD License
 
- Copyright (c) 2023, Danang Syady Rahmatullah, Martin Mirchev All rights reserved.
+ Copyright (c) 2023, Danang Syady Rahmatullah, Martin Mirchev. All rights reserved.
 
  Redistribution and use in source and binary forms, with or without modification, are permitted
  provided that the following conditions are met:
@@ -29,7 +29,6 @@ options {
 }
 
 file: OPENING_BRACE header document CLOSING_BRACE EOF;
-
 
 ///// Header edge case: some documents contain \ucN and \htmautsp in the header
 header:
@@ -247,65 +246,66 @@ docfmt:
 section: ((secfmt | docfmt)* hdrftr? para+ ( SECT section)?);
 
 secfmt: // These control words can appear anywhere in the section.
-	(SECT
-	| SECTD
-	| ENDNHERE
-	| BINFSXNN
-	| BINSXNN
-	| DS
-	| PNSECLVLN
-	| SECTUNLOCKED
-	// section break
-	| SBKNONE
-	| SBKCOL
-	| SBKPAGE
-	| SBKEVEN
-	| SBKODD
-	// columns
-	| COLSN
-	| COLSXN
-	| COLNON
-	| COLSRN
-	| COLWN
-	| LINEBETCOL
-	// line numbering
-	| LINEMODN
-	| LINEXN
-	| LINESTARTSN
-	| LINERESTART
-	| LINEPPAGE
-	| LINECONT
-	// page information
-	| PGWSXNN
-	| PGHSXNN
-	| MARGLSXNN
-	| MARGRSXNN
-	| MARGTSXNN
-	| MARGBSXNN
-	| MARGMIRSXN
-	| LNDSCPSXN
-	// page numbers
-	| PGNSTARTSN
-	| PGNCONT
-	| PGNRESTART
-	| PGNXN
-	| PGNYN
-	| PGNDEC
-	| PGNUCRM
-	| PGNLCRM
-	| PGNUCLTR
-	| PGNLCLTR
-	| PGNBIDIA
-	| PGNBIDIB
-	// TODO add remaining page number types TODO add remaining 2002 codes
-	| SAFTNNALC
-	| SAFTNNAR
-	| SAFTNNAUC
-	| SAFTNNRLC
-	| SFTNBJ
-	| SFTNNAR
-	| SFTNNRLC
-    );
+	(
+		SECT
+		| SECTD
+		| ENDNHERE
+		| BINFSXNN
+		| BINSXNN
+		| DS
+		| PNSECLVLN
+		| SECTUNLOCKED
+		// section break
+		| SBKNONE
+		| SBKCOL
+		| SBKPAGE
+		| SBKEVEN
+		| SBKODD
+		// columns
+		| COLSN
+		| COLSXN
+		| COLNON
+		| COLSRN
+		| COLWN
+		| LINEBETCOL
+		// line numbering
+		| LINEMODN
+		| LINEXN
+		| LINESTARTSN
+		| LINERESTART
+		| LINEPPAGE
+		| LINECONT
+		// page information
+		| PGWSXNN
+		| PGHSXNN
+		| MARGLSXNN
+		| MARGRSXNN
+		| MARGTSXNN
+		| MARGBSXNN
+		| MARGMIRSXN
+		| LNDSCPSXN
+		// page numbers
+		| PGNSTARTSN
+		| PGNCONT
+		| PGNRESTART
+		| PGNXN
+		| PGNYN
+		| PGNDEC
+		| PGNUCRM
+		| PGNLCRM
+		| PGNUCLTR
+		| PGNLCLTR
+		| PGNBIDIA
+		| PGNBIDIB
+		// TODO add remaining page number types TODO add remaining 2002 codes
+		| SAFTNNALC
+		| SAFTNNAR
+		| SAFTNNAUC
+		| SAFTNNRLC
+		| SFTNBJ
+		| SFTNNAR
+		| SFTNNRLC
+	);
 
 //// Header Footer
 hdrftr: OPENING_BRACE hdrctl para+ CLOSING_BRACE hdrftr?;
