@@ -243,7 +243,7 @@ docfmt:
 	| FORMSHADE;
 
 //// Section
-section: ((secfmt | docfmt)* hdrftr? para+ ( SECT section)?);
+section: (secfmt | docfmt)* hdrftr? para+ ( SECT section)?;
 
 secfmt: // These control words can appear anywhere in the section.
 	(
@@ -485,6 +485,11 @@ pcdata: (
 			| FONTFILE
 			| CODEPAGE
 			| FALT
+			// Color table
+			| COLORTBL
+			| REDN
+			| GREENN
+			| BLUEN
 			// stylesheet
 			| STYLESHEET
 			| S
