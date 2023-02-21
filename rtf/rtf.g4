@@ -33,8 +33,7 @@ file: '{' header document '}' EOF;
 header:
 	RTFVERSION charset UNICODE_CHAR_LEN? HTMAUTSP? from? deffont? // mandatory from v1.9
 	(deflang | NOUICOMPAT)* // `deflang` mandatory from v1.9, order with `NOUICOMPAT` may vary
-	fonttbl?
-    colortbl? stylesheet?;
+	fonttbl? colortbl? stylesheet?;
 
 RTFVERSION: '\\rtf' INTEGER? SPACE?;
 
@@ -461,9 +460,10 @@ secfmt: // These control words can appear anywhere in the section.
 	| PGNBIDIA
 	| PGNBIDIB
 	// TODO add remaining page number types TODO add remaining 2002 codes
-    | SAFTNNALC
-    | SAFTNNAR
-    | SAFTNNAUC
+	| SAFTNNALC
+	| SAFTNNAR
+	| SAFTNNAUC
+	| SAFTNNRLC
 	| SFTNBJ
 	| SFTNNAR
 	| SFTNNRLC;
@@ -824,6 +824,58 @@ pcdata: (
 			// document views and zoom level
 			| VIEWKINDN
 			| VIEWSCALEN
+			// footnotes and endnotes
+			| FETN
+			| FTNSEP
+			| FTNSEPC
+			| FTNCN
+			| AFTNSEP
+			| AFTNSEPC
+			| AFTNCN
+			| ENDNOTES
+			| ENDDOC
+			| FTNTJ
+			| FTNBJ
+			| AENDNOTES
+			| AENDDOC
+			| AFTNBJ
+			| AFTNTJ
+			| FTNSTARTN
+			| AFTNSTARTN
+			| FTNRSTPG
+			| FTNRESTART
+			| FTNRSTCONT
+			| AFTNRESTART
+			| AFTNRSTCONT
+			| FTNNAR
+			| FTNNALC
+			| FTNNAUC
+			| FTNNRLC
+			| FTNNRUC
+			| FTNNCHI
+			| FTNNCHOSUNG
+			| FTNNCNUM
+			| FTNNDBNUM
+			| FTNNDBNUMD
+			| FTNNDBNUMT
+			| FTNNDBNUMK
+			| FTNNDBAR
+			| FTNNGANADA
+			| FTNNGBNUM
+			| FTNNGBNUMD
+			| FTNNGBNUML
+			| FTNNGBNUMK
+			| FTNNZODIAC
+			| FTNNZODIACD
+			| FTNNZODIACL
+			| AFTNNAR
+			| AFTNNALC
+			| AFTNNAUC
+			| AFTNNRLC
+			| AFTNNRUC
+			| AFTNNCHI
+			| AFTNNCHOSUN
+			| AFTNNCNUM
 			// page information
 			| PAPERWN
 			| PAPERHN
@@ -885,6 +937,10 @@ pcdata: (
 			| PGNLCLTR
 			| PGNBIDIA
 			| PGNBIDIB
+			| SAFTNNALC
+			| SAFTNNAR
+			| SAFTNNAUC
+			| SAFTNNRLC
 			| SFTNBJ
 			| SFTNNAR
 			| SFTNNRLC
@@ -933,8 +989,11 @@ pcdata: (
 			| FSN
 			| I0
 			| KERNINGN
+			| LANGFEN
+			| LANGFENPN
 			| LANGN
 			| LANGNPN
+			| ALANGN
 			| LTRCH
 			| RTLCH
 			| OUTL0
