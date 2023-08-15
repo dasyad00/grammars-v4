@@ -372,11 +372,11 @@ nestrow:
 nestcell: textpar+ NESTCELL;
 
 /// Character text
-charText: OPENING_BRACE charText CLOSING_BRACE | ptext | atext;
+charText: OPENING_BRACE charText CLOSING_BRACE | atext | ptext ;
 ptext: (
 		((chrfmt | parfmt | secfmt)* data)
 		// specification leads to left-recursion
-		| ((chrfmt | parfmt | secfmt)+ charText)
+		| ((chrfmt | parfmt | secfmt)+ charText+)
 	)+;
 
 // token suffixed by 0 are formatting properties which be disabled.
