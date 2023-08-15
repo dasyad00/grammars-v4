@@ -369,13 +369,49 @@ DBCH: '\\dbch' SPACE?;
 RTLPAR: '\\rtlpar' SPACE?;
 LTRPAR: '\\ltrpar' SPACE?;
 
+/// Highlighting
+HIGHLIGHTN: '\\highlight' INTEGER SPACE?;
+
 /// Special characters!
+CHDATE: '\\chdate' SPACE?;
+CHDPL: '\\chdpl' SPACE?;
+CHDPA: '\\chdpa' SPACE?;
+CHTIME: '\\chtime' SPACE?;
+CHPGN: '\\chpgn' SPACE?;
+SECTNUM: '\\sectnum' SPACE?;
+CHFTN: '\\chftn' SPACE?;
+CHATN: '\\chatn' SPACE?;
+CHFTNSEP: '\\chftnsep' SPACE?;
+CHFTNSEPC: '\\chftnsepc' SPACE?;
+PAGE: '\\page' SPACE?;
+COLUMN: '\\column' SPACE?;
+LINE: '\\line' SPACE?;
+LBRN: '\\lbr' INTEGER? SPACE?;
+SOFTPAGE: '\\softpage' SPACE?;
+SOFTCOL: '\\softcol' SPACE?;
+SOFTLINE: '\\softline' SPACE?;
+SOFTLHEIGHTN: '\\softlheight' INTEGER SPACE?;
+TAB: '\\tab' SPACE?;
+EMDASH: '\\emdash' SPACE?;
+ENDASH: '\\endash' SPACE?;
+EMSPACE: '\\emspace' SPACE?;
+ENSPACE: '\\enspace' SPACE?;
+QMSPACE: '\\qmspace' SPACE?;
+BULLET: '\\bullet' SPACE?;
+LQUOTE: '\\lquote' SPACE?;
+RQUOTE: '\\rquote' SPACE?;
+LDBLQUOTE: '\\ldblquote' SPACE?;
+RDBLQUOTE: '\\rdblquote' SPACE?;
 FORMULA: '\\|' SPACE?;
 NBSP: '\\~' SPACE?;
 OPTIONAL_HYPHEN: '\\-' SPACE?;
 NONBREAKING_HYPHEN: '\\_' SPACE?;
 SUBENTRY: '\\:' SPACE?;
 IGNORABLE_CONTROL_PREFIX: '\\*';
+ZWBO: '\\zwbo' SPACE?;
+ZWNBO: '\\zwnbo' SPACE?;
+ZWJ: '\\zwj' SPACE?;
+ZWNJ: '\\zwnj' SPACE?;
 
 // Lexer rules
 WS: ('\\n' | '\u0000' | ('\r'? '\n') | '\r') -> skip;

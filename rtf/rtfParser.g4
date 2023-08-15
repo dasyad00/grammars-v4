@@ -429,19 +429,57 @@ aprops:
 
 /// Special characters!
 spec:
-	PAR
-	| SECT
+	CHDATE
+	| CHDPL
+	| CHDPA
+	| CHTIME
+	| CHPGN
+	| SECTNUM
+	| CHFTN
+	| CHATN
+	| CHFTNSEP
+	| CHFTNSEPC
+	| CELL
+	| NESTCELL
+	| ROW
+	| NESTROW
+	| PAR
+    | SECT
+	| PAGE
+	| COLUMN
+	| LINE
+	| LBRN
+	| SOFTPAGE
+	| SOFTCOL
+	| SOFTLINE
+	| SOFTLHEIGHTN
+	| TAB
+	| EMDASH
+	| ENDASH
+	| EMSPACE
+	| ENSPACE
+	| QMSPACE
+	| BULLET
+	| LQUOTE
+	| RQUOTE
+	| LDBLQUOTE
+	| RDBLQUOTE
 	| FORMULA
 	| NBSP
 	| OPTIONAL_HYPHEN
-	| NONBREAKING_HYPHEN;
+	| NONBREAKING_HYPHEN
+	| SUBENTRY
+	| ZWBO
+	| ZWNBO
+	| ZWJ
+	| ZWNJ;
 // | HEX_NUMBER;
 
 // Wrap `data` in braces (See Other problem areas in RTF: Property changes)
 data:
 	OPENING_BRACE data CLOSING_BRACE
-	| pcdata
-	| spec; // TODO add rest of data
+	| spec
+	| pcdata; // TODO add rest of data
 
 // taken from 'Formal Syntax' section
 pcdata: (
@@ -710,6 +748,51 @@ pcdata: (
 			| DBCH
 			| RTLPAR
 			| LTRPAR
+			// `spec`
+			| CHDATE
+			| CHDPL
+			| CHDPA
+			| CHTIME
+			| CHPGN
+			| SECTNUM
+			| CHFTN
+			| CHATN
+			| CHFTNSEP
+			| CHFTNSEPC
+			| CELL
+			| NESTCELL
+			| ROW
+			| NESTROW
+			| PAR
+			| SECT
+			| PAGE
+			| COLUMN
+			| LINE
+			| LBRN
+			| SOFTPAGE
+			| SOFTCOL
+			| SOFTLINE
+			| SOFTLHEIGHTN
+			| TAB
+			| EMDASH
+			| ENDASH
+			| EMSPACE
+			| ENSPACE
+			| QMSPACE
+			| BULLET
+			| LQUOTE
+			| RQUOTE
+			| LDBLQUOTE
+			| RDBLQUOTE
+			| FORMULA
+			| NBSP
+			| OPTIONAL_HYPHEN
+			| NONBREAKING_HYPHEN
+			| SUBENTRY
+			| ZWBO
+			| ZWNBO
+			| ZWJ
+			| ZWNJ
 		)
 		| ESCAPED_OPENING_BRACE
 		| ESCAPED_CLOSING_BRACE
