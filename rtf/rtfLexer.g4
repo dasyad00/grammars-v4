@@ -105,6 +105,48 @@ SPERSONAL: '\\spersonal' SPACE?;
 SCOMPOSE: '\\scompose' SPACE?;
 SREPLY: '\\sreply' SPACE?;
 
+/// List table
+LIST: '\\list' SPACE?;
+LISTTABLE: '\\listtable' SPACE?;
+LISTPICTURE: '\\listpicture' SPACE?;
+LISTTEMPLATEIDN: '\\listtemplateid' INTEGER SPACE?;
+LISTSIMPLE: '\\listsimple' SPACE?;
+LISTHYBRID: '\\listhybrid' SPACE?;
+LISTRESTARTHDNN: '\\listrestarthdn' INTEGER SPACE?;
+LISTIDN: '\\listid' INTEGER SPACE?;
+LISTNAME: '\\listname' SPACE?;
+LISTSTYLEIDN: '\\liststyleid' INTEGER SPACE?;
+LISTSTYLENAME: '\\liststylename' SPACE?;
+LISTLEVEL: '\\listlevel' SPACE?;
+LEVELFOLLOWN: '\\levelfollow' INTEGER SPACE?;
+LEVELSTARTATN: '\\levelstartat' INTEGER SPACE?;
+LVLTENTATIVE: '\\lvltentative' SPACE?;
+LEVELOLDN: '\\levelold' INTEGER SPACE?;
+LEVELPREVN: '\\levelprev' INTEGER SPACE?;
+LEVELPREVSPACEN: '\\levelprevspace' INTEGER SPACE?;
+LEVELSPACEN: '\\levelspace' INTEGER SPACE?;
+LEVELINDENTN: '\\levelindent' INTEGER SPACE?;
+LEVELTEXT: '\\leveltext' SPACE?;
+LEVELTEMPLATEIDN: '\\leveltemplateid' INTEGER SPACE?;
+LEVELNUMBERS: '\\levelnumbers' SPACE?;
+LEVELLEGALN: '\\levellegal' INTEGER SPACE?;
+LEVELNORESTARTN: '\\levelnorestart' INTEGER SPACE?;
+LEVELPICTUREN: '\\levelpicture' INTEGER SPACE?;
+JCLISTTAB: '\\jclisttab' SPACE?;
+TXN: '\\tx' INTEGER SPACE?;
+LEVELNFCN: '\\levelnfc' INTEGER SPACE?;
+LEVELNFCNN: '\\levelnfcn' INTEGER SPACE?;
+LEVELJCN: '\\leveljc' INTEGER SPACE?;
+LEVELJCNN: '\\leveljcn' INTEGER SPACE?;
+
+// List Override table
+LISTOVERRIDETABLE: '\\*\\listoverridetable' SPACE?;
+LISTOVERRIDE: '\\listoverride' SPACE?;
+LISTOVERRIDECOUNTN: '\\listoverridecount' INTEGER SPACE?;
+LISTOVERRIDESTARTAT: '\\listoverridestartat' SPACE?;
+LISTOVERRIDEFORMATN: '\\listoverrideformat' INTEGER SPACE?;
+LSN: '\\ls' INTEGER SPACE?;
+
 ///// Document
 INFO: '\\info' SPACE?;
 
@@ -306,7 +348,7 @@ QL: '\\ql' SPACE?; // left-aligned (default)
 QR: '\\qr' SPACE?; // right-aligned
 QD: '\\qd' SPACE?; // distributed
 // indentation
-FIN: '\\fi' INTEGER SPACE?;
+FIN: '\\fi' '-'? INTEGER SPACE?;
 CUFIN: '\\cufi' INTEGER SPACE?;
 LIN: '\\li' INTEGER SPACE?;
 LINN: '\\lin' INTEGER SPACE?;
@@ -321,6 +363,83 @@ SLN: '\\sl' INTEGER SPACE?;
 SLMULTN: '\\slmult' INTEGER SPACE?;
 // subdocuments
 SUBDOCUMENTN: '\\subdocument' INTEGER SPACE?;
+
+/// Bullets and Numbering
+PNTEXT: '\\pntext' SPACE?;
+PN: '\\pn' SPACE?;
+PNLVLN: '\\pnlvl' INTEGER SPACE?;
+PNLVLBLT: '\\pnlvlblt' SPACE?;
+PNLVLBODY: '\\pnlvlbody' SPACE?;
+PNLVLCONT: '\\pnlvlcont' SPACE?;
+PNSECLVL: '\\pnseclvl' SPACE?;
+PNCARD: '\\pncard' SPACE?;
+PNDEC: '\\pndec' SPACE?;
+PNUCLTR: '\\pnucltr' SPACE?;
+PNUCRM: '\\pnucrm' SPACE?;
+PNLCLTR: '\\pnlcltr' SPACE?;
+PNLCRM: '\\pnlcrm' SPACE?;
+PNORD: '\\pnord' SPACE?;
+PNORDT: '\\pnordt' SPACE?;
+PNBIDIA: '\\pnbidia' SPACE?;
+PNBIDIB: '\\pnbidib' SPACE?;
+PNAIU: '\\pnaiu' SPACE?;
+PNAIUD: '\\pnaiud' SPACE?;
+PNAIUEO: '\\pnaiueo' SPACE?;
+PNAIUEOD: '\\pnaiueod' SPACE?;
+PNCHOSUNG: '\\pnchosung' SPACE?;
+PNCNUM: '\\pncnum' SPACE?;
+PNDBNUM: '\\pndbnum' SPACE?;
+PNDBNUMD: '\\pndbnumd' SPACE?;
+PNDBNUMK: '\\pndbnumk' SPACE?;
+PNDBNUML: '\\pndbnuml' SPACE?;
+PNDBNUMT: '\\pndbnumt' SPACE?;
+PNDECD: '\\pndecd' SPACE?;
+PNGANADA: '\\pnganada' SPACE?;
+PNGBNUM: '\\pngbnum' SPACE?;
+PNGBNUMD: '\\pngbnumd' SPACE?;
+PNGBNUMK: '\\pngbnumk' SPACE?;
+PNGBNUML: '\\pngbnuml' SPACE?;
+PNIROHA: '\\pniroha' SPACE?;
+PNIROHAD: '\\pnirohad' SPACE?;
+PNULDASH: '\\pnuldash' SPACE?;
+PNULDASHD: '\\pnuldashd' SPACE?;
+PNULDASHDD: '\\pnuldashdd' SPACE?;
+PNULHAIR: '\\pnulhair' SPACE?;
+PNULTH: '\\pnulth' SPACE?;
+PNULWAVE: '\\pnulwave' SPACE?;
+PNZODIAC: '\\pnzodiac' SPACE?;
+PNZODIACD: '\\pnzodiacd' SPACE?;
+PNZODIACL: '\\pnzodiacl;' SPACE?;
+
+PNSTARTN: '\\pnstart' INTEGER SPACE?;
+PNNUMONCE: '\\pnnumonce' SPACE?;
+PNACROSS: '\\pnacross' SPACE?;
+PNINDENT: '\\pnindent' SPACE?;
+PNSPN: '\\pnsp' INTEGER SPACE?;
+PNPREV: '\\pnprev' SPACE?;
+PNHANG: '\\pnhang' SPACE?;
+PNRESTART: '\\pnrestart' SPACE?;
+
+PNFN: '\\pnf' INTEGER SPACE?;
+PNFSN: '\\pnfs' INTEGER SPACE?;
+PNB: '\\pnb' SPACE?;
+PNI: '\\pni' SPACE?;
+PNCAPS: '\\pncaps' SPACE?;
+PNSCAPS: '\\pnscaps' SPACE?;
+PNUL: '\\pnul' SPACE?;
+PNULD: '\\pnuld' SPACE?;
+PNULDB: '\\pnuldb' SPACE?;
+PNULNONE: '\\pnulnone' SPACE?;
+PNULW: '\\pnulw' SPACE?;
+PNSTRIKE: '\\pnstrike' SPACE?;
+PNCFN: '\\pncf' INTEGER SPACE?;
+
+PNQC: '\\pnqc' SPACE?;
+PNQL: '\\pnql' SPACE?;
+PNQR: '\\pnqr' SPACE?;
+
+PNTXTB: '\\pntxtb' SPACE?;
+PNTXTA: '\\pntxta' SPACE?;
 
 /// Table definition
 ROW: '\\row' SPACE?;
@@ -418,6 +537,7 @@ WS: ('\\n' | '\u0000' | ('\r'? '\n') | '\r') -> skip;
 
 SPACE: ' '+;
 
+DOT: '.';
 HYPHEN: '-';
 SEMICOLON: ';';
 
@@ -432,7 +552,7 @@ UNICODE_CHAR: '\\u' INTEGER SPACE?;
 UNICODE_CHAR_LEN: '\\uc' INTEGER SPACE?;
 
 INTEGER: DIGIT+;
-HEX_NUMBER: '\\\'h' HEX_DIGIT HEX_DIGIT;
+HEX_NUMBER: '\\\'' HEX_DIGIT HEX_DIGIT;
 
 fragment HEX_DIGIT: [a-fA-F0-9];
 fragment DIGIT: [0-9];

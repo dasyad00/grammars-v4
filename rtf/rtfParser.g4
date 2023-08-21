@@ -34,7 +34,7 @@ file: OPENING_BRACE header document CLOSING_BRACE EOF;
 header:
 	RTFVERSION charset UNICODE_CHAR_LEN? HTMAUTSP? from? deffont? // mandatory from v1.9
 	(deflang | NOUICOMPAT)* // `deflang` mandatory from v1.9, order with `NOUICOMPAT` may vary
-	fonttbl? colortbl? stylesheet?;
+	fonttbl? colortbl? stylesheet? listtables?;
 
 charset: (ANSI | MAC | PC | PCA)? (ANSICPG)?;
 
@@ -114,6 +114,57 @@ formatting: (
 		| chrfmt
 	)+;
 stylename: pcdata;
+
+// msft-rtf-1_9_1.pdf page 30
+listtables: (listtable | listoverridetable)+;
+listtable: OPENING_BRACE '\\*' LISTTABLE list+ CLOSING_BRACE;
+// listtable: '{' '\\*' LISTTABLE // listpicture? list+ '}'; listpicture: '{\\*' LISTPICTURE
+// shppictlist '}';
+list:
+	'{' list+ '}'
+	| (
+		LIST LISTTEMPLATEIDN
+		| (LISTSIMPLE | LISTHYBRID)
+		| listlevel+
+		| LISTRESTARTHDNN
+		| LISTIDN
+		| LISTNAME pcdata* SEMICOLON
+		| LISTSTYLEIDN
+		| LISTSTYLENAME
+	);
+listlevel:
+	OPENING_BRACE LISTLEVEL listnumber+ listjustification+ (
+		LEVELFOLLOWN
+		| LEVELSTARTATN
+		| LVLTENTATIVE? (
+			LEVELOLDN
+			| LEVELPREVN
+			| LEVELPREVSPACEN
+			| LEVELSPACEN
+			| LEVELINDENTN
+		)
+		| leveltext
+		| levelnumbers
+		| LEVELLEGALN
+		| LEVELNORESTARTN
+		| chrfmt
+		| LEVELPICTUREN
+		| LIN
+		| FIN
+		| (JCLISTTAB TXN)
+		| LINN
+	)+ CLOSING_BRACE;
+listnumber: LEVELNFCN | LEVELNFCNN;
+listjustification: LEVELJCN | LEVELJCNN;
+leveltext:
+	OPENING_BRACE LEVELTEXT LEVELTEMPLATEIDN? sdata* DOT? ';'? CLOSING_BRACE;
+levelnumbers:
+	OPENING_BRACE LEVELNUMBERS sdata* ';'? CLOSING_BRACE;
+
+listoverridetable:
+	OPENING_BRACE LISTOVERRIDETABLE listoverride+ CLOSING_BRACE;
+listoverride:
+	'{' LISTOVERRIDE LISTIDN LISTOVERRIDECOUNTN LSN '}';
 
 ///// Document
 document: documentInfo? docfmt* section+;
@@ -372,9 +423,10 @@ nestrow:
 nestcell: textpar+ NESTCELL;
 
 /// Character text
-charText: OPENING_BRACE charText CLOSING_BRACE | atext | ptext ;
+charText: atext | ptext | OPENING_BRACE charText CLOSING_BRACE;
 ptext: (
-		((chrfmt | parfmt | secfmt)* data)
+		((chrfmt | parfmt | secfmt) SPACE?)
+		| ((chrfmt | parfmt | secfmt)* data)
 		// specification leads to left-recursion
 		| ((chrfmt | parfmt | secfmt)+ charText+)
 	)+;
@@ -427,6 +479,80 @@ aprops:
 	| RTLPAR
 	| LTRPAR;
 
+// Bullets and Numbering
+pn: pnseclvl | pnpara;
+pnseclvl: '{' PNSECLVL pndesc '}';
+pnpara: pntext pnprops;
+pntext: '{' PNTEXT charText '}';
+pnprops: '{' '\\*' PN pnlevel pndesc '}';
+pnlevel: PNLVLN | PNLVLBLT | PNLVLBODY | PNLVLCONT;
+pndesc: ( pnnstyle | pnchrfmt | pntxtb | pntxta | pnfmt)+;
+pnnstyle:
+	PNCARD
+	| PNDEC
+	| PNUCLTR
+	| PNUCRM
+	| PNLCLTR
+	| PNLCRM
+	| PNORD
+	| PNORDT
+	| PNBIDIA
+	| PNBIDIB
+	| PNAIU
+	| PNAIUD
+	| PNAIUEO
+	| PNAIUEOD
+	| PNCHOSUNG
+	| PNCNUM
+	| PNDBNUM
+	| PNDBNUMD
+	| PNDBNUMK
+	| PNDBNUML
+	| PNDBNUMT
+	| PNDECD
+	| PNGANADA
+	| PNGBNUM
+	| PNGBNUMD
+	| PNGBNUMK
+	| PNGBNUML
+	| PNIROHA
+	| PNIROHAD
+	| PNULDASH
+	| PNULDASHD
+	| PNULDASHDD
+	| PNULHAIR
+	| PNULTH
+	| PNULWAVE
+	| PNZODIAC
+	| PNZODIACD
+	| PNZODIACL;
+pnchrfmt: (
+		PNFN
+		| PNFSN
+		| PNB
+		| PNI
+		| PNCAPS
+		| PNSCAPS
+		| pnul
+		| PNSTRIKE
+		| PNCFN
+	)+;
+pnul: PNUL | PNULD | PNULDB | PNULNONE | PNULW;
+pnjust: PNQC | PNQL | PNQR;
+pnfmt: (
+		PNNUMONCE
+		| PNACROSS
+		| PNINDENT
+		| PNSPN
+		| PNPREV
+		| pnjust
+		| PNSTARTN
+		| PNHANG
+		| PNRESTART
+	)+;
+pntxtb: OPENING_BRACE PNTXTB pcdata CLOSING_BRACE;
+pntxta: OPENING_BRACE PNTXTA pcdata CLOSING_BRACE;
+
 /// Special characters!
 spec:
 	CHDATE
@@ -444,7 +570,7 @@ spec:
 	| ROW
 	| NESTROW
 	| PAR
-    | SECT
+	| SECT
 	| PAGE
 	| COLUMN
 	| LINE
@@ -482,6 +608,7 @@ data:
 	| pcdata; // TODO add rest of data
 
 // taken from 'Formal Syntax' section
+sdata: HEX_NUMBER+;
 pcdata: (
 		~(
 			OPENING_BRACE
@@ -794,6 +921,8 @@ pcdata: (
 			| ZWJ
 			| ZWNJ
 		)
+		| SPACE
+		| DOT
 		| ESCAPED_OPENING_BRACE
 		| ESCAPED_CLOSING_BRACE
 		| ESCAPED_BACKSLASH
