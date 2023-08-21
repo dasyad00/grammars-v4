@@ -169,7 +169,6 @@ listoverride:
 ///// Document
 document: documentInfo? docfmt* section+;
 
-// TODO add other fields
 documentInfo:
 	OPENING_BRACE INFO (
 		title
@@ -348,7 +347,28 @@ secfmt: // These control words can appear anywhere in the section.
 		| PGNLCLTR
 		| PGNBIDIA
 		| PGNBIDIB
-		// TODO add remaining page number types TODO add remaining 2002 codes
+		| PGNCHOSUNG
+		| PGNCNUM
+		| PGNDBNUM
+		| PGNDBNUMD
+		| PGNDBNUMT
+		| PGNDBNUMK
+		| PGNDECD
+		| PGNGANADA
+		| PGNGBNUM
+		| PGNGBNUMD
+		| PGNGBNUML
+		| PGNGBNUMK
+		| PGNZODIAC
+		| PGNZODIACD
+		| PGNZODIACL
+		| PGNHNN
+		| PGNHNSH
+		| PGNHNSP
+		| PGNHNSC
+		| PGNHNSM
+		| PGNHNSN
+		// footnotes and endnotes
 		| SAFTNNALC
 		| SAFTNNAR
 		| SAFTNNAUC
