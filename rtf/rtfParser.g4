@@ -466,7 +466,7 @@ ptext: (
 		| ((chrfmt | pn | parfmt | secfmt | tabdef)+ charText+)
 		// empty body
 		| ((chrfmt | pn | parfmt | secfmt | tabdef) SPACE?)
-		// exists in some documents | (JCLISTTAB TXN)
+		// exists in some documents
 	)+;
 
 // token suffixed by 0 are formatting properties which be disabled.
@@ -649,6 +649,7 @@ spec:
 // Wrap `data` in braces (See Other problem areas in RTF: Property changes)
 data:
 	OPENING_BRACE data CLOSING_BRACE
+    | UNICODE_CHAR_LEN
 	| spec
 	| pcdata; // TODO add rest of data
 
@@ -662,7 +663,6 @@ pcdata: (
 			// undefined control codes
 			| CONTROL_CODE
 			| GENERATOR
-			// | JCLISTTAB | TXN rtf
 			| RTFVERSION
 			// `charset`
 			| ANSI
@@ -874,7 +874,13 @@ pcdata: (
 			// defined control codes `parfmt`
 			| PAR
 			| PARD
+			| KEEP
+			| KEEPN
+			| NOLINE
+			| HYPHPAR_TOGGLE
 			| ITAPN
+			| NOWIDCTLPAR
+			| WIDCTLPAR
 			| SN
 			| QC
 			| QJ
@@ -889,9 +895,13 @@ pcdata: (
 			| RINN
 			| SAN
 			| SBN
+			| SAAUTON
+			| SBAUTON
+			| SLN
+			| SLMULTN
 			| RTLPAR
 			| LTRPAR
-			// pn | PNTEXT `chrfmt`
+			// `chrfmt`
 			| PLAIN
 			| B0
 			| CAPS0
