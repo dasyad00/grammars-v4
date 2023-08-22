@@ -117,9 +117,7 @@ stylename: pcdata;
 
 // msft-rtf-1_9_1.pdf page 30
 listtables: (listtable | listoverridetable)+;
-listtable: OPENING_BRACE '\\*' LISTTABLE list+ CLOSING_BRACE;
-// listtable: '{' '\\*' LISTTABLE // listpicture? list+ '}'; listpicture: '{\\*' LISTPICTURE
-// shppictlist '}';
+listtable: OPENING_BRACE LISTTABLE list+ CLOSING_BRACE;
 list:
 	'{' list+ '}'
 	| (
@@ -394,7 +392,7 @@ hdrctl:
 // Paragraph text Wrap `para` in braces (See Other problem areas in RTF: Property changes)
 para: OPENING_BRACE para CLOSING_BRACE | textpar | row;
 
-textpar: (parfmt | secfmt)* (SUBDOCUMENTN | charText+) (PAR para)?;
+textpar: (pn | parfmt | secfmt)* (SUBDOCUMENTN | charText+) (PAR para)?;
 
 // Paragraph formatting properties
 parfmt: // NOTE: These control words can appear anywhere in the body of a paragraph.
@@ -445,10 +443,11 @@ nestcell: textpar+ NESTCELL;
 /// Character text
 charText: atext | ptext | OPENING_BRACE charText CLOSING_BRACE;
 ptext: (
-		((chrfmt | parfmt | secfmt) SPACE?)
-		| ((chrfmt | parfmt | secfmt)* data)
+		((chrfmt | pn | parfmt | secfmt)* data)
 		// specification leads to left-recursion
-		| ((chrfmt | parfmt | secfmt)+ charText+)
+		| ((chrfmt | pn | parfmt | secfmt)+ charText+)
+		// empty body
+		| ((chrfmt | pn | parfmt | secfmt) SPACE?)
 	)+;
 
 // token suffixed by 0 are formatting properties which be disabled.
@@ -504,7 +503,7 @@ pn: pnseclvl | pnpara;
 pnseclvl: '{' PNSECLVL pndesc '}';
 pnpara: pntext pnprops;
 pntext: '{' PNTEXT charText '}';
-pnprops: '{' '\\*' PN pnlevel pndesc '}';
+pnprops: '{' PN pnlevel pndesc '}';
 pnlevel: PNLVLN | PNLVLBLT | PNLVLBODY | PNLVLCONT;
 pndesc: ( pnnstyle | pnchrfmt | pntxtb | pntxta | pnfmt)+;
 pnnstyle:
@@ -943,6 +942,7 @@ pcdata: (
 		)
 		| SPACE
 		| DOT
+        | HEX_NUMBER
 		| ESCAPED_OPENING_BRACE
 		| ESCAPED_CLOSING_BRACE
 		| ESCAPED_BACKSLASH

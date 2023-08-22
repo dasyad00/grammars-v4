@@ -89,7 +89,7 @@ BLUEN: '\\blue' INTEGER255;
 /// Stylesheet
 STYLESHEET: '\\stylesheet' SPACE?;
 S: '\\s' SPACE?;
-CS: '\\*\\cs' SPACE?;
+CS: IGNORABLE_CONTROL_PREFIX '\\cs' SPACE?;
 DS: '\\ds' SPACE?;
 KEYCODE: '\\keycode' SPACE?;
 SHIFT: '\\shift' SPACE?;
@@ -107,7 +107,7 @@ SREPLY: '\\sreply' SPACE?;
 
 /// List table
 LIST: '\\list' SPACE?;
-LISTTABLE: '\\listtable' SPACE?;
+LISTTABLE: IGNORABLE_CONTROL_PREFIX '\\listtable' SPACE?;
 LISTPICTURE: '\\listpicture' SPACE?;
 LISTTEMPLATEIDN: '\\listtemplateid' INTEGER SPACE?;
 LISTSIMPLE: '\\listsimple' SPACE?;
@@ -140,7 +140,7 @@ LEVELJCN: '\\leveljc' INTEGER SPACE?;
 LEVELJCNN: '\\leveljcn' INTEGER SPACE?;
 
 // List Override table
-LISTOVERRIDETABLE: '\\*\\listoverridetable' SPACE?;
+LISTOVERRIDETABLE: IGNORABLE_CONTROL_PREFIX '\\listoverridetable' SPACE?;
 LISTOVERRIDE: '\\listoverride' SPACE?;
 LISTOVERRIDECOUNTN: '\\listoverridecount' INTEGER SPACE?;
 LISTOVERRIDESTARTAT: '\\listoverridestartat' SPACE?;
@@ -388,7 +388,7 @@ SUBDOCUMENTN: '\\subdocument' INTEGER SPACE?;
 
 /// Bullets and Numbering
 PNTEXT: '\\pntext' SPACE?;
-PN: '\\pn' SPACE?;
+PN: IGNORABLE_CONTROL_PREFIX '\\pn' SPACE?;
 PNLVLN: '\\pnlvl' INTEGER SPACE?;
 PNLVLBLT: '\\pnlvlblt' SPACE?;
 PNLVLBODY: '\\pnlvlbody' SPACE?;
@@ -586,14 +586,6 @@ OPENING_BRACE: '{';
 CLOSING_BRACE: '}';
 
 CONTROL_CODE: '\\' [a-zA-Z]+ ((HYPHEN? INTEGER)? SPACE?)?;
-
-UNKNOWN_CONTROL_GROUP:
-	(
-		OPENING_BRACE UNKNOWN_CONTROL_WORD { this.openingBrace(); this.pushMode(UnknownControl); }
-	) -> skip;
-
-// minimum length string to catch
-UNKNOWN_CONTROL_WORD: (IGNORABLE_CONTROL_PREFIX '\\');
 
 ANY: .;
 
