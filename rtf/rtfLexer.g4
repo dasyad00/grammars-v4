@@ -594,7 +594,15 @@ ESCAPED_BACKSLASH: '\\\\';
 OPENING_BRACE: '{';
 CLOSING_BRACE: '}';
 
+PGDSCTBL: IGNORABLE_CONTROL_PREFIX '\\pgdsctbl' SPACE?;
 CONTROL_CODE: '\\' [a-zA-Z]+ ((HYPHEN? INTEGER)? SPACE?)?;
+
+UNKNOWN_CONTROL_GROUP:
+	(
+		OPENING_BRACE UNKNOWN_CONTROL_WORD { this.openingBrace(); this.pushMode(UnknownControl); }
+	) -> skip;
+
+UNKNOWN_CONTROL_WORD: PGDSCTBL;
 
 ANY: .;
 

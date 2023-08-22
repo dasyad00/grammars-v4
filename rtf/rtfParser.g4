@@ -119,7 +119,7 @@ stylename: pcdata;
 listtables: (listtable | listoverridetable)+;
 listtable: OPENING_BRACE LISTTABLE list+ CLOSING_BRACE;
 list:
-	'{' list+ '}'
+	OPENING_BRACE list+ CLOSING_BRACE
 	| (
 		LIST LISTTEMPLATEIDN
 		| (LISTSIMPLE | LISTHYBRID)
@@ -162,7 +162,7 @@ levelnumbers:
 listoverridetable:
 	OPENING_BRACE LISTOVERRIDETABLE listoverride+ CLOSING_BRACE;
 listoverride:
-	'{' LISTOVERRIDE LISTIDN LISTOVERRIDECOUNTN LSN '}';
+	OPENING_BRACE LISTOVERRIDE LISTIDN LISTOVERRIDECOUNTN LSN CLOSING_BRACE;
 
 //// Generator - page 38
 generator: OPENING_BRACE GENERATOR programName ';'? CLOSING_BRACE;
@@ -511,10 +511,10 @@ aprops:
 
 // Bullets and Numbering
 pn: pnseclvl | pnpara;
-pnseclvl: '{' PNSECLVL pndesc '}';
+pnseclvl: OPENING_BRACE PNSECLVL pndesc CLOSING_BRACE;
 pnpara: pntext pnprops;
-pntext: '{' PNTEXT charText '}';
-pnprops: '{' PN pnlevel pndesc '}';
+pntext: OPENING_BRACE PNTEXT charText CLOSING_BRACE;
+pnprops: OPENING_BRACE PN pnlevel pndesc CLOSING_BRACE;
 pnlevel: PNLVLN | PNLVLBLT | PNLVLBODY | PNLVLCONT;
 pndesc: ( pnnstyle | pnchrfmt | pntxtb | pntxta | pnfmt)+;
 pnnstyle:
@@ -875,6 +875,8 @@ pcdata: (
 			| SBN
 			| RTLPAR
 			| LTRPAR
+			// pn
+			// | PNTEXT
 			// `chrfmt`
 			| PLAIN
 			| B0
@@ -954,7 +956,7 @@ pcdata: (
 		)
 		| SPACE
 		| DOT
-        | HEX_NUMBER
+		| HEX_NUMBER
 		| ESCAPED_OPENING_BRACE
 		| ESCAPED_CLOSING_BRACE
 		| ESCAPED_BACKSLASH
