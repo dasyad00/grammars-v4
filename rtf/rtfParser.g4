@@ -169,7 +169,7 @@ generator: OPENING_BRACE GENERATOR programName ';'? CLOSING_BRACE;
 programName: pcdata;
 
 ///// Document
-document: documentInfo? docfmt* section+;
+document: documentInfo? userprops? docfmt* section+;
 
 documentInfo:
 	OPENING_BRACE INFO (
@@ -213,6 +213,13 @@ revtim: OPENING_BRACE REVTIM time CLOSING_BRACE;
 printim: OPENING_BRACE PRINTIM time CLOSING_BRACE;
 buptim: OPENING_BRACE BUPTIM time CLOSING_BRACE;
 time: YRN? MON? DYN? HRN? MINN? SECN?;
+
+//// user-defined document properties
+userprops: OPENING_BRACE USERPROPS propinfo* CLOSING_BRACE;
+propinfo: OPENING_BRACE propname PROPTYPEN staticval linkval? CLOSING_BRACE;
+propname:  OPENING_BRACE PROPNAME pcdata CLOSING_BRACE;
+staticval: OPENING_BRACE STATICVAL pcdata CLOSING_BRACE;
+linkval: OPENING_BRACE LINKVAL pcdata CLOSING_BRACE;
 
 //// Document formatting TODO add other formatting fields
 docfmt:

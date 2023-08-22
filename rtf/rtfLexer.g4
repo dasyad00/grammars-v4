@@ -184,6 +184,13 @@ HRN: '\\hr' INTEGER SPACE?;
 MINN: '\\min' INTEGER SPACE?;
 SECN: '\\sec' INTEGER SPACE?;
 
+/// user-defined document properties
+USERPROPS: IGNORABLE_CONTROL_PREFIX '\\userprops' SPACE?;
+PROPTYPEN: '\\proptype' INTEGER SPACE?;
+PROPNAME: '\\propname' SPACE?;
+STATICVAL: '\\staticval' SPACE?;
+LINKVAL: '\\linkval' SPACE?;
+
 //// Document formatting
 DEFTABN: '\\deftab' INTEGER SPACE?;
 HYPHHOTZN: '\\hyphhotz' INTEGER SPACE?;
