@@ -594,8 +594,8 @@ pnfmt: (
 		| PNHANG
 		| PNRESTART
 	)+;
-pntxtb: OPENING_BRACE PNTXTB pcdata CLOSING_BRACE;
-pntxta: OPENING_BRACE PNTXTA pcdata CLOSING_BRACE;
+pntxtb: OPENING_BRACE PNTXTB data CLOSING_BRACE;
+pntxta: OPENING_BRACE PNTXTA data CLOSING_BRACE;
 
 /// Special characters!
 spec:
@@ -642,8 +642,8 @@ spec:
 	| ZWBO
 	| ZWNBO
 	| ZWJ
-	| ZWNJ;
-// | HEX_NUMBER;
+	| ZWNJ
+	| HEX_NUMBER;
 
 // Wrap `data` in braces (See Other problem areas in RTF: Property changes)
 data:
@@ -968,7 +968,6 @@ pcdata: (
 		)
 		| SPACE
 		| DOT
-		| HEX_NUMBER
 		| ESCAPED_OPENING_BRACE
 		| ESCAPED_CLOSING_BRACE
 		| ESCAPED_BACKSLASH
