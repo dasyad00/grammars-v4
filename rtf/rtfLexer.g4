@@ -395,6 +395,18 @@ SLMULTN: '\\slmult' INTEGER SPACE?;
 // subdocuments
 SUBDOCUMENTN: '\\subdocument' INTEGER SPACE?;
 
+// Tabs
+TB: '\\tb' SPACE?;
+TQR: '\\tqr' SPACE?;
+TQC: '\\tqc' SPACE?;
+TQDEC: '\\tqdec' SPACE?;
+TLDOT: '\\tldot' SPACE?;
+TLMDOT: '\\tlmdot' SPACE?;
+TLHYPH: '\\tlhyph' SPACE?;
+TLUL: '\\tlul' SPACE?;
+TLTH: '\\tlth' SPACE?;
+TLEQ: '\\tleq' SPACE?;
+
 /// Bullets and Numbering
 PNTEXT: '\\pntext' SPACE?;
 PN: IGNORABLE_CONTROL_PREFIX '\\pn' SPACE?;

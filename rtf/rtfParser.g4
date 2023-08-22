@@ -110,7 +110,9 @@ reply: SREPLY;
 formatting: (
 		// brdrdef
 		parfmt
-		// | apoctl |tabdef |shading
+		// | apoctl
+		| tabdef
+		// |shading
 		| chrfmt
 	)+;
 stylename: pcdata;
@@ -165,7 +167,8 @@ listoverride:
 	OPENING_BRACE LISTOVERRIDE LISTIDN LISTOVERRIDECOUNTN LSN CLOSING_BRACE;
 
 //// Generator - page 38
-generator: OPENING_BRACE GENERATOR programName ';'? CLOSING_BRACE;
+generator:
+	OPENING_BRACE GENERATOR programName ';'? CLOSING_BRACE;
 programName: pcdata;
 
 ///// Document
@@ -216,8 +219,9 @@ time: YRN? MON? DYN? HRN? MINN? SECN?;
 
 //// user-defined document properties
 userprops: OPENING_BRACE USERPROPS propinfo* CLOSING_BRACE;
-propinfo: OPENING_BRACE propname PROPTYPEN staticval linkval? CLOSING_BRACE;
-propname:  OPENING_BRACE PROPNAME pcdata CLOSING_BRACE;
+propinfo:
+	OPENING_BRACE propname PROPTYPEN staticval linkval? CLOSING_BRACE;
+propname: OPENING_BRACE PROPNAME pcdata CLOSING_BRACE;
 staticval: OPENING_BRACE STATICVAL pcdata CLOSING_BRACE;
 linkval: OPENING_BRACE LINKVAL pcdata CLOSING_BRACE;
 
@@ -403,7 +407,9 @@ hdrctl:
 // Paragraph text Wrap `para` in braces (See Other problem areas in RTF: Property changes)
 para: OPENING_BRACE para CLOSING_BRACE | textpar | row;
 
-textpar: (pn | parfmt | secfmt)* (SUBDOCUMENTN | charText+) (PAR para)?;
+textpar: (pn | parfmt | secfmt | tabdef)* (SUBDOCUMENTN | charText+) (
+		PAR para
+	)?;
 
 // Paragraph formatting properties
 parfmt: // NOTE: These control words can appear anywhere in the body of a paragraph.
@@ -454,11 +460,12 @@ nestcell: textpar+ NESTCELL;
 /// Character text
 charText: atext | ptext | OPENING_BRACE charText CLOSING_BRACE;
 ptext: (
-		((chrfmt | pn | parfmt | secfmt)* data)
+		((chrfmt | pn | parfmt | secfmt | tabdef)* data)
 		// specification leads to left-recursion
-		| ((chrfmt | pn | parfmt | secfmt)+ charText+)
+		| ((chrfmt | pn | parfmt | secfmt | tabdef)+ charText+)
 		// empty body
-		| ((chrfmt | pn | parfmt | secfmt) SPACE?)
+		| ((chrfmt | pn | parfmt | secfmt | tabdef) SPACE?)
+		// exists in some documents | (JCLISTTAB TXN)
 	)+;
 
 // token suffixed by 0 are formatting properties which be disabled.
@@ -508,6 +515,13 @@ aprops:
 	| DBCH
 	| RTLPAR
 	| LTRPAR;
+
+// Tabs
+tabdef: (tab | bartab | JCLISTTAB TXN)+;
+tab: tabkind? tablead? TXN;
+bartab: tablead? TB;
+tabkind: TQR | TQC | TQDEC;
+tablead: TLDOT | TLMDOT | TLHYPH | TLUL | TLTH | TLEQ;
 
 // Bullets and Numbering
 pn: pnseclvl | pnpara;
@@ -646,7 +660,7 @@ pcdata: (
 			// undefined control codes
 			| CONTROL_CODE
 			| GENERATOR
-            // rtf
+			// | JCLISTTAB | TXN rtf
 			| RTFVERSION
 			// `charset`
 			| ANSI
@@ -875,9 +889,7 @@ pcdata: (
 			| SBN
 			| RTLPAR
 			| LTRPAR
-			// pn
-			// | PNTEXT
-			// `chrfmt`
+			// pn | PNTEXT `chrfmt`
 			| PLAIN
 			| B0
 			| CAPS0
