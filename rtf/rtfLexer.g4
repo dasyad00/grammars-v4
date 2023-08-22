@@ -147,6 +147,8 @@ LISTOVERRIDESTARTAT: '\\listoverridestartat' SPACE?;
 LISTOVERRIDEFORMATN: '\\listoverrideformat' INTEGER SPACE?;
 LSN: '\\ls' INTEGER SPACE?;
 
+GENERATOR: IGNORABLE_CONTROL_PREFIX '\\generator' SPACE?;
+
 ///// Document
 INFO: '\\info' SPACE?;
 

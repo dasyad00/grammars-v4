@@ -34,7 +34,7 @@ file: OPENING_BRACE header document CLOSING_BRACE EOF;
 header:
 	RTFVERSION charset UNICODE_CHAR_LEN? HTMAUTSP? from? deffont? // mandatory from v1.9
 	(deflang | NOUICOMPAT)* // `deflang` mandatory from v1.9, order with `NOUICOMPAT` may vary
-	fonttbl? colortbl? stylesheet? listtables?;
+	fonttbl? colortbl? stylesheet? listtables? generator?;
 
 charset: (ANSI | MAC | PC | PCA)? (ANSICPG)?;
 
@@ -163,6 +163,10 @@ listoverridetable:
 	OPENING_BRACE LISTOVERRIDETABLE listoverride+ CLOSING_BRACE;
 listoverride:
 	'{' LISTOVERRIDE LISTIDN LISTOVERRIDECOUNTN LSN '}';
+
+//// Generator - page 38
+generator: OPENING_BRACE GENERATOR programName ';'? CLOSING_BRACE;
+programName: pcdata;
 
 ///// Document
 document: documentInfo? docfmt* section+;
@@ -634,7 +638,8 @@ pcdata: (
 			| CLOSING_BRACE
 			// undefined control codes
 			| CONTROL_CODE
-			// rtf
+			| GENERATOR
+            // rtf
 			| RTFVERSION
 			// `charset`
 			| ANSI
