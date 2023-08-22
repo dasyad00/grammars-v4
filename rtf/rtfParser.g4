@@ -151,7 +151,7 @@ listlevel:
 		| LEVELPICTUREN
 		| LIN
 		| FIN
-		| (JCLISTTAB TXN)
+		| (JCLISTTAB? TXN)
 		| LINN
 	)+ CLOSING_BRACE;
 listnumber: LEVELNFCN | LEVELNFCNN;
@@ -227,7 +227,8 @@ linkval: OPENING_BRACE LINKVAL pcdata CLOSING_BRACE;
 
 //// Document formatting TODO add other formatting fields
 docfmt:
-	DEFTABN
+	IGNORABLE_CONTROL_PREFIX docfmt
+	| DEFTABN
 	| HYPHHOTZN
 	| HYPHCONSECN
 	| HYPHCAPS
@@ -407,7 +408,7 @@ hdrctl:
 // Paragraph text Wrap `para` in braces (See Other problem areas in RTF: Property changes)
 para: OPENING_BRACE para CLOSING_BRACE | textpar | row;
 
-textpar: (pn | parfmt | secfmt | tabdef)* (SUBDOCUMENTN | charText+) (
+textpar: (pn | parfmt | secfmt | docfmt | tabdef)* (SUBDOCUMENTN | charText+) (
 		PAR para
 	)?;
 
@@ -657,6 +658,7 @@ pcdata: (
 		~(
 			OPENING_BRACE
 			| CLOSING_BRACE
+            | IGNORABLE_CONTROL_PREFIX
 			// undefined control codes
 			| CONTROL_CODE
 			| GENERATOR
