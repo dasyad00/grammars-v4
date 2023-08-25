@@ -227,90 +227,94 @@ linkval: OPENING_BRACE LINKVAL pcdata CLOSING_BRACE;
 
 //// Document formatting TODO add other formatting fields
 docfmt:
-	IGNORABLE_CONTROL_PREFIX docfmt
-	| DEFTABN
-	| HYPHHOTZN
-	| HYPHCONSECN
-	| HYPHCAPS
-	| HYPHAUTO
-	| DEFLANGN
-	| DEFLANGFEN
-	| ADEFLANGN
-	| DOCTYPEN
-	// document views
-	| VIEWKINDN
-	| VIEWSCALEN
-	// footnotes and endnotes
-	| FETN
-	| FTNSEP
-	| FTNSEPC
-	| FTNCN
-	| AFTNSEP
-	| AFTNSEPC
-	| AFTNCN
-	| ENDNOTES
-	| ENDDOC
-	| FTNTJ
-	| FTNBJ
-	| AENDNOTES
-	| AENDDOC
-	| AFTNBJ
-	| AFTNTJ
-	| FTNSTARTN
-	| AFTNSTARTN
-	| FTNRSTPG
-	| FTNRESTART
-	| FTNRSTCONT
-	| AFTNRESTART
-	| AFTNRSTCONT
-	| FTNNAR
-	| FTNNALC
-	| FTNNAUC
-	| FTNNRLC
-	| FTNNRUC
-	| FTNNCHI
-	| FTNNCHOSUNG
-	| FTNNCNUM
-	| FTNNDBNUM
-	| FTNNDBNUMD
-	| FTNNDBNUMT
-	| FTNNDBNUMK
-	| FTNNDBAR
-	| FTNNGANADA
-	| FTNNGBNUM
-	| FTNNGBNUMD
-	| FTNNGBNUML
-	| FTNNGBNUMK
-	| FTNNZODIAC
-	| FTNNZODIACD
-	| FTNNZODIACL
-	| AFTNNAR
-	| AFTNNALC
-	| AFTNNAUC
-	| AFTNNRLC
-	| AFTNNRUC
-	| AFTNNCHI
-	| AFTNNCHOSUN
-	| AFTNNCNUM
-	// TODO add remaining footnote numberings
+	IGNORABLE_CONTROL_PREFIX? (
+		DEFTABN
+		| HYPHHOTZN
+		| HYPHCONSECN
+		| HYPHCAPS
+		| HYPHAUTO
+		| DEFLANGN
+		| DEFLANGFEN
+		| ADEFLANGN
+		| DOCTYPEN
+		// document views
+		| VIEWKINDN
+		| VIEWSCALEN
+		// footnotes and endnotes
+		| FETN
+		| FTNSEP
+		| FTNSEPC
+		| FTNCN
+		| AFTNSEP
+		| AFTNSEPC
+		| AFTNCN
+		| ENDNOTES
+		| ENDDOC
+		| FTNTJ
+		| FTNBJ
+		| AENDNOTES
+		| AENDDOC
+		| AFTNBJ
+		| AFTNTJ
+		| FTNSTARTN
+		| AFTNSTARTN
+		| FTNRSTPG
+		| FTNRESTART
+		| FTNRSTCONT
+		| AFTNRESTART
+		| AFTNRSTCONT
+		| FTNNAR
+		| FTNNALC
+		| FTNNAUC
+		| FTNNRLC
+		| FTNNRUC
+		| FTNNCHI
+		| FTNNCHOSUNG
+		| FTNNCNUM
+		| FTNNDBNUM
+		| FTNNDBNUMD
+		| FTNNDBNUMT
+		| FTNNDBNUMK
+		| FTNNDBAR
+		| FTNNGANADA
+		| FTNNGBNUM
+		| FTNNGBNUMD
+		| FTNNGBNUML
+		| FTNNGBNUMK
+		| FTNNZODIAC
+		| FTNNZODIACD
+		| FTNNZODIACL
+		| AFTNNAR
+		| AFTNNALC
+		| AFTNNAUC
+		| AFTNNRLC
+		| AFTNNRUC
+		| AFTNNCHI
+		| AFTNNCHOSUN
+		| AFTNNCNUM
+		// TODO add remaining footnote numberings
 
-	// page information
-	| PAPERWN
-	| PAPERHN
-	| MARGLN
-	| MARGRN
-	| MARGTN
-	| MARGBN
-	| HTMAUTSP
-	// other?
-	| NOUICOMPAT
-	| FORMSHADE;
+		// page information
+		| PAPERWN
+		| PAPERHN
+		| MARGLN
+		| MARGRN
+		| MARGTN
+		| MARGBN
+		| HTMAUTSP
+		// other?
+		| NOUICOMPAT
+		| FORMSHADE
+	);
 
 //// Section
-section: (secfmt | docfmt)* hdrftr? para+ ( SECT section)?;
+section: (
+		(secfmt | docfmt | spec)+
+		| OPENING_BRACE (secfmt | docfmt | spec)+ CLOSING_BRACE
+	)* hdrftr? para+ (SECT section)?;
 
 secfmt: // These control words can appear anywhere in the section.
-	(
+	IGNORABLE_CONTROL_PREFIX? (
 		SECT
 		| SECTD
 		| ENDNHERE
@@ -408,9 +412,11 @@ hdrctl:
 // Paragraph text Wrap `para` in braces (See Other problem areas in RTF: Property changes)
 para: OPENING_BRACE para CLOSING_BRACE | textpar | row;
 
-textpar: (pn | parfmt | secfmt | docfmt | tabdef)* (SUBDOCUMENTN | charText+) (
-		PAR para
-	)?;
+textpar:
+	pn? (
+		parfmt
+		| secfmt // may appear anywhere in the body of a section
+	)* tabdef? (SUBDOCUMENTN | charText+) (PAR para)?;
 
 // Paragraph formatting properties
 parfmt: // NOTE: These control words can appear anywhere in the body of a paragraph.
@@ -461,12 +467,24 @@ nestcell: textpar+ NESTCELL;
 /// Character text
 charText: atext | ptext | OPENING_BRACE charText CLOSING_BRACE;
 ptext: (
-		((chrfmt | pn | parfmt | secfmt | tabdef)* data)
+		(
+			(
+				chrfmt
+				| parfmt // may appear anywhere in the body of the paragraph
+				| secfmt // may appear anywhere in the body of a section
+			)* data
+		)
 		// specification leads to left-recursion
-		| ((chrfmt | pn | parfmt | secfmt | tabdef)+ charText+)
-		// empty body
-		| ((chrfmt | pn | parfmt | secfmt | tabdef) SPACE?)
-		// exists in some documents
+		| (
+			(
+				chrfmt
+				| parfmt // may appear anywhere in the body of the paragraph
+				| secfmt // may appear anywhere in the body of a section
+			)+ (
+				charText
+				| SPACE // empty body exists in some documents
+			)*
+		)
 	)+;
 
 // token suffixed by 0 are formatting properties which be disabled.
@@ -495,7 +513,18 @@ chrfmt:
 	| SUB
 	| SUPER
 	| UL0
-	| aprops;
+	// aprops
+	| RTLCH
+	| LTRCH
+	| AFN
+	| AFSN
+	| AI
+	| LOCH
+	| HICH
+	| DBCH
+	| RTLPAR
+	| LTRPAR;
+
 // Associated Character Properties
 atext: ltrrun | rtlrun | losbrun | hisbrun | dbrun;
 // TODO investigate &
@@ -649,7 +678,7 @@ spec:
 // Wrap `data` in braces (See Other problem areas in RTF: Property changes)
 data:
 	OPENING_BRACE data CLOSING_BRACE
-    | UNICODE_CHAR_LEN
+	| UNICODE_CHAR_LEN
 	| spec
 	| pcdata; // TODO add rest of data
 
@@ -659,7 +688,7 @@ pcdata: (
 		~(
 			OPENING_BRACE
 			| CLOSING_BRACE
-            | IGNORABLE_CONTROL_PREFIX
+			| IGNORABLE_CONTROL_PREFIX
 			// undefined control codes
 			| CONTROL_CODE
 			| GENERATOR
