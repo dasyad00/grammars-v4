@@ -470,6 +470,7 @@ ptext: (
 		(
 			(
 				chrfmt
+                | pn
 				| parfmt // may appear anywhere in the body of the paragraph
 				| secfmt // may appear anywhere in the body of a section
 			)* data
@@ -478,6 +479,7 @@ ptext: (
 		| (
 			(
 				chrfmt
+                | pn
 				| parfmt // may appear anywhere in the body of the paragraph
 				| secfmt // may appear anywhere in the body of a section
 			)+ (
