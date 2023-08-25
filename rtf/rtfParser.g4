@@ -470,18 +470,20 @@ ptext: (
 		(
 			(
 				chrfmt
-                | pn
 				| parfmt // may appear anywhere in the body of the paragraph
 				| secfmt // may appear anywhere in the body of a section
+				| pn
+				| tabdef
 			)* data
 		)
 		// specification leads to left-recursion
 		| (
 			(
 				chrfmt
-                | pn
 				| parfmt // may appear anywhere in the body of the paragraph
 				| secfmt // may appear anywhere in the body of a section
+				| pn
+				| tabdef
 			)+ (
 				charText
 				| SPACE // empty body exists in some documents
@@ -678,11 +680,14 @@ spec:
 	| HEX_NUMBER;
 
 // Wrap `data` in braces (See Other problem areas in RTF: Property changes)
-data:
-	OPENING_BRACE data CLOSING_BRACE
-	| UNICODE_CHAR_LEN
-	| spec
-	| pcdata; // TODO add rest of data
+data: (
+		UNICODE_CHAR_LEN
+		| spec
+		| pcdata
+		| OPENING_BRACE data CLOSING_BRACE
+	);
+
+// TODO add rest of data
 
 // taken from 'Formal Syntax' section
 sdata: HEX_NUMBER+;
@@ -751,6 +756,8 @@ pcdata: (
 			| SPERSONAL
 			| SCOMPOSE
 			| SREPLY
+			// list table
+			| JCLISTTAB
 			// Document info
 			| INFO
 			// `docfmt`
