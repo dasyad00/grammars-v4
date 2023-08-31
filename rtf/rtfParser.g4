@@ -59,7 +59,7 @@ fonttbl:
 // edge cases: some documents exclude fontfamily hence it is defined as optional; fcharsetN and fprqN may be switched around in ordering.
 fontinfo:
 	FN fontfamily? ((FCHARSETN | FPRQN)+)? NONTAGGEDNAME? fontemb? CODEPAGE? fontname fontaltname?
-		SEMICOLON;
+		SEMICOLON?;
 
 fontfamily:
 	FNIL
@@ -118,7 +118,7 @@ formatting: (
 stylename: pcdata;
 
 // msft-rtf-1_9_1.pdf page 30
-listtables: (listtable | listoverridetable)+;
+listtables: listtable listoverridetable?;
 listtable: OPENING_BRACE LISTTABLE list+ CLOSING_BRACE;
 list:
 	OPENING_BRACE list+ CLOSING_BRACE
@@ -157,9 +157,9 @@ listlevel:
 listnumber: LEVELNFCN | LEVELNFCNN;
 listjustification: LEVELJCN | LEVELJCNN;
 leveltext:
-	OPENING_BRACE LEVELTEXT LEVELTEMPLATEIDN? sdata* DOT? ';'? CLOSING_BRACE;
+	OPENING_BRACE LEVELTEXT LEVELTEMPLATEIDN? sdata* DOT? SEMICOLON? CLOSING_BRACE;
 levelnumbers:
-	OPENING_BRACE LEVELNUMBERS sdata* ';'? CLOSING_BRACE;
+	OPENING_BRACE LEVELNUMBERS sdata* SEMICOLON? CLOSING_BRACE;
 
 listoverridetable:
 	OPENING_BRACE LISTOVERRIDETABLE listoverride+ CLOSING_BRACE;
@@ -168,7 +168,7 @@ listoverride:
 
 //// Generator - page 38
 generator:
-	OPENING_BRACE GENERATOR programName ';'? CLOSING_BRACE;
+	OPENING_BRACE GENERATOR programName SEMICOLON? CLOSING_BRACE;
 programName: pcdata;
 
 ///// Document
@@ -691,334 +691,9 @@ data: (
 
 // taken from 'Formal Syntax' section
 sdata: HEX_NUMBER+;
-pcdata: (
-		~(
-			OPENING_BRACE
-			| CLOSING_BRACE
-			| IGNORABLE_CONTROL_PREFIX
-			// undefined control codes
-			| CONTROL_CODE
-			| GENERATOR
-			| RTFVERSION
-			// `charset`
-			| ANSI
-			| MAC
-			| PC
-			| PCA
-			| ANSICPG
-			// default font
-			| DEFFN
-			| ADEFFN
-			//  `fonttbl`
-			| FN
-			| FONTTBL
-			// `fontfamily
-			| FNIL
-			| FROMAN
-			| FSWISS
-			| FMODERN
-			| FSCRIPT
-			| FDECOR
-			| FTECH
-			| FBIDI
-			| FCHARSETN
-			| FPRQN
-			| NONTAGGEDNAME
-			|
-			// `fontemb`
-			NONTAGGEDNAME
-			| FONTEMB
-			| FTNIL
-			| FTTRUETYPE
-			| FONTFILE
-			| CODEPAGE
-			| FALT
-			// Color table
-			| COLORTBL
-			| REDN
-			| GREENN
-			| BLUEN
-			// stylesheet
-			| STYLESHEET
-			| S
-			| CS
-			| DS
-			| KEYCODE
-			| SHIFT
-			| CTRL
-			| ALT
-			| FNN
-			| ADDITIVE
-			| SBASEDON
-			| SNEXTN
-			| SAUTOUPD
-			| SHIDDEN
-			| SPERSONAL
-			| SCOMPOSE
-			| SREPLY
-			// list table
-			| JCLISTTAB
-			// Document info
-			| INFO
-			// `docfmt`
-			| DEFTABN
-			| HYPHHOTZN
-			| HYPHCONSECN
-			| HYPHCAPS
-			| HYPHAUTO
-			| DEFLANGN
-			| DEFLANGFEN
-			| ADEFLANGN
-			| DOCTYPEN
-			// document views and zoom level
-			| VIEWKINDN
-			| VIEWSCALEN
-			// footnotes and endnotes
-			| FETN
-			| FTNSEP
-			| FTNSEPC
-			| FTNCN
-			| AFTNSEP
-			| AFTNSEPC
-			| AFTNCN
-			| ENDNOTES
-			| ENDDOC
-			| FTNTJ
-			| FTNBJ
-			| AENDNOTES
-			| AENDDOC
-			| AFTNBJ
-			| AFTNTJ
-			| FTNSTARTN
-			| AFTNSTARTN
-			| FTNRSTPG
-			| FTNRESTART
-			| FTNRSTCONT
-			| AFTNRESTART
-			| AFTNRSTCONT
-			| FTNNAR
-			| FTNNALC
-			| FTNNAUC
-			| FTNNRLC
-			| FTNNRUC
-			| FTNNCHI
-			| FTNNCHOSUNG
-			| FTNNCNUM
-			| FTNNDBNUM
-			| FTNNDBNUMD
-			| FTNNDBNUMT
-			| FTNNDBNUMK
-			| FTNNDBAR
-			| FTNNGANADA
-			| FTNNGBNUM
-			| FTNNGBNUMD
-			| FTNNGBNUML
-			| FTNNGBNUMK
-			| FTNNZODIAC
-			| FTNNZODIACD
-			| FTNNZODIACL
-			| AFTNNAR
-			| AFTNNALC
-			| AFTNNAUC
-			| AFTNNRLC
-			| AFTNNRUC
-			| AFTNNCHI
-			| AFTNNCHOSUN
-			| AFTNNCNUM
-			// page information
-			| PAPERWN
-			| PAPERHN
-			| MARGLN
-			| MARGRN
-			| MARGTN
-			| MARGBN
-			| HTMAUTSP
-			// other?
-			| NOUICOMPAT
-			| FORMSHADE
-			//// `secfmt`
-			| SECT
-			| SECTD
-			| ENDNHERE
-			| BINFSXNN
-			| BINSXNN
-			| DS
-			| PNSECLVLN
-			| SECTUNLOCKED
-			// section break
-			| SBKNONE
-			| SBKCOL
-			| SBKPAGE
-			| SBKEVEN
-			| SBKODD
-			// columns
-			| COLSN
-			| COLSXN
-			| COLNON
-			| COLSRN
-			| COLWN
-			| LINEBETCOL
-			// line numbering
-			| LINEMODN
-			| LINEXN
-			| LINESTARTSN
-			| LINERESTART
-			| LINEPPAGE
-			| LINECONT
-			// page information
-			| PGWSXNN
-			| PGHSXNN
-			| MARGLSXNN
-			| MARGRSXNN
-			| MARGTSXNN
-			| MARGBSXNN
-			| MARGMIRSXN
-			| LNDSCPSXN
-			// page numbers
-			| PGNSTARTSN
-			| PGNCONT
-			| PGNRESTART
-			| PGNXN
-			| PGNYN
-			| PGNDEC
-			| PGNUCRM
-			| PGNLCRM
-			| PGNUCLTR
-			| PGNLCLTR
-			| PGNBIDIA
-			| PGNBIDIB
-			// TODO add remaining page number types TODO add remaining 2002 codes
-			| SAFTNNALC
-			| SAFTNNAR
-			| SAFTNNAUC
-			| SAFTNNRLC
-			| SFTNBJ
-			| SFTNNAR
-			| SFTNNRLC
-			//// `headerctl`
-			| HEADER
-			| FOOTER
-			| HEADERL
-			| HEADERR
-			| HEADERF
-			| FOOTERL
-			| FOOTERR
-			| FOOTERF
-			| RTLCH
-			| LTRCH
-			| AFN
-			| AFSN
-			| AI
-			// defined control codes `parfmt`
-			| PAR
-			| PARD
-			| KEEP
-			| KEEPN
-			| NOLINE
-			| HYPHPAR_TOGGLE
-			| ITAPN
-			| NOWIDCTLPAR
-			| WIDCTLPAR
-			| SN
-			| QC
-			| QJ
-			| QL
-			| QR
-			| QD
-			| FIN
-			| CUFIN
-			| LIN
-			| LINN
-			| RIN
-			| RINN
-			| SAN
-			| SBN
-			| SAAUTON
-			| SBAUTON
-			| SLN
-			| SLMULTN
-			| RTLPAR
-			| LTRPAR
-			// `chrfmt`
-			| PLAIN
-			| B0
-			| CAPS0
-			| CBN
-			| CFN
-			| CSN
-			| FN
-			| FSN
-			| I0
-			| KERNINGN
-			| LANGFEN
-			| LANGFENPN
-			| LANGN
-			| LANGNPN
-			| ALANGN
-			| LTRCH
-			| RTLCH
-			| OUTL0
-			| SHAD0
-			| STRIKE0
-			| STRIKED10
-			| SUB
-			| SUPER
-			| UL0
-			// `aprops`
-			| LOCH
-			| HICH
-			| DBCH
-			| RTLPAR
-			| LTRPAR
-			// `spec`
-			| CHDATE
-			| CHDPL
-			| CHDPA
-			| CHTIME
-			| CHPGN
-			| SECTNUM
-			| CHFTN
-			| CHATN
-			| CHFTNSEP
-			| CHFTNSEPC
-			| CELL
-			| NESTCELL
-			| ROW
-			| NESTROW
-			| PAR
-			| SECT
-			| PAGE
-			| COLUMN
-			| LINE
-			| LBRN
-			| SOFTPAGE
-			| SOFTCOL
-			| SOFTLINE
-			| SOFTLHEIGHTN
-			| TAB
-			| EMDASH
-			| ENDASH
-			| EMSPACE
-			| ENSPACE
-			| QMSPACE
-			| BULLET
-			| LQUOTE
-			| RQUOTE
-			| LDBLQUOTE
-			| RDBLQUOTE
-			| FORMULA
-			| NBSP
-			| OPTIONAL_HYPHEN
-			| NONBREAKING_HYPHEN
-			| SUBENTRY
-			| ZWBO
-			| ZWNBO
-			| ZWJ
-			| ZWNJ
-		)
-		| SPACE
-		| DOT
-		| ESCAPED_OPENING_BRACE
-		| ESCAPED_CLOSING_BRACE
-		| ESCAPED_BACKSLASH
-	)+;
+pcdata:
+	ESCAPED_OPENING_BRACE
+	| ESCAPED_CLOSING_BRACE
+	| ESCAPED_BACKSLASH
+	| SEMICOLON
+	| TEXT;
