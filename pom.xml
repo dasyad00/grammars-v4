@@ -264,6 +264,7 @@
 				<module>romannumerals</module>
                 <module>ron</module>
 				<module>rpn</module>
+                <module>rtf</module>
 				<module>ruby</module>
 				<module>rust</module>
 				<module>scala</module>
